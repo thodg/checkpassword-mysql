@@ -61,9 +61,11 @@ int checkpassword_mysql (const char *login,
              escaped_login, escaped_pass);
     {
       int result = mysql_query (&my, query);
-      if (result) {
-        syslog (LOG_ERR, "mysql_query(\"%s\") failed (%i): %s",
+      if (result || CHECKPASSWORD_MYSQL_DEBUG) {
+        syslog (LOG_ERR, "mysql_query(\"%s\") returned %i: %s",
                 query, result, mysql_error (&my));
+      }
+      if (result) {
         mysql_close (&my);
         exit (111);
       }
