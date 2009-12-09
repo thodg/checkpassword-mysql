@@ -5,6 +5,7 @@
   checkpassword_mysql.c  -  core function
 
 */
+#define _BSD_SOURCE 1
 #include <stdlib.h>
 #include <syslog.h>
 #include <unistd.h>
@@ -45,10 +46,19 @@ int checkpassword_mysql (const char *login,
         exit (111);
   }
   {
-    int len = strlen (CHECKPASSWORD_MYSQL_QUERY)
-      + strlen (login) + strlen (pass);
+    int len = strlen (login);
+    char *escaped_login = calloc (len * 2 + 1, 1);
+    mysql_real_escape_string (&my, escaped_login, login, len);
+
+    len = strlen (pass);
+    char *escaped_pass = calloc (len * 2 + 1, 1);
+    mysql_real_escape_string (&my, escaped_pass, pass, len);
+
+    len = strlen (CHECKPASSWORD_MYSQL_QUERY)
+      + strlen (escaped_login) + strlen (escaped_pass);
     char *query = calloc(len + 1, 1);
-    snprintf(query, len, CHECKPASSWORD_MYSQL_QUERY, login, pass);
+    snprintf(query, len, CHECKPASSWORD_MYSQL_QUERY,
+             escaped_login, escaped_pass);
     {
       int result = mysql_query (&my, query);
       if (result) {
@@ -62,7 +72,7 @@ int checkpassword_mysql (const char *login,
       MYSQL_RES *res = mysql_store_result (&my);
       if (!res) {
         syslog (LOG_ERR, "mysql_store_result() failed: %s",
-                query, mysql_error (&my));
+                mysql_error (&my));
         mysql_close (&my);
         exit (111);
       }

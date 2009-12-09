@@ -18,4 +18,4 @@
   NULL
 
 #define CHECKPASSWORD_MYSQL_QUERY \
-  "SELECT id FROM accounts WHERE id=%s AND clearpass=%s LIMIT 1"
+  "SELECT id FROM accounts WHERE id='%s' AND clearpass='%s' LIMIT 1"
