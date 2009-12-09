@@ -1,6 +1,6 @@
 /*
-  checkpassword-pg  -  checkpassword with postgresql backend
-  copyright 2008 Thomas de Grivel
+  checkpassword-mysql  -  checkpassword with postgresql backend
+  copyright 2008 2009 Thomas de Grivel
 
   cli.c  -  command line interface
 
@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <syslog.h>
 #include <unistd.h>
-#include "checkpassword_pg.h"
+#include "checkpassword_mysql.h"
 
 
 /* returns new value of i, or call exit with code 2 on overflow */
@@ -53,7 +53,7 @@ int main (int argc, char **argv)
   const char *time;
   int i;
 
-  openlog ("checkpassword-pg", 0, LOG_AUTH);
+  openlog ("checkpassword-mysql", 0, LOG_AUTH);
   read_data (data);
 
   login = data;
@@ -72,5 +72,5 @@ int main (int argc, char **argv)
   }
 
   argv[0] = argv[1];
-  return checkpassword_pg (login, pass, time, argv);
+  return checkpassword_mysql (login, pass, time, argv);
 }
