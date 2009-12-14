@@ -3,13 +3,13 @@
   "localhost"
 
 #define CHECKPASSWORD_MYSQL_USER                \
-  "vmail"
+  "user"
 
 #define CHECKPASSWORD_MYSQL_PASS                \
-  "23.fTh-e+r3Dq3/eiAu.r2Vy3rD"
+  "pass"
 
 #define CHECKPASSWORD_MYSQL_DB                  \
-  "vmail"
+  "db"
 
 #define CHECKPASSWORD_MYSQL_PORT                \
   0
